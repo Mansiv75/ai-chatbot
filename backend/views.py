@@ -50,3 +50,45 @@ def get_suppliers():
     ]
     
     return jsonify(supplier_list)
+
+def get_products_by_brand(brand):
+    products = Product.query.filter_by(brand=brand).all()
+    if not products:
+        return jsonify({"message": "No products found for this brand"}), 404
+    return jsonify([
+        {
+            "id": product.id,
+            "name": product.name,
+            "price": product.price,
+            "category": product.category,
+            "description": product.description
+        }
+        for product in products
+    ])
+
+def get_suppliers_by_category(category):
+    suppliers = Supplier.query.filter(Supplier.product_categories.like(f"%{category}%")).all()
+    if not suppliers:
+        return jsonify({"message": "No suppliers found for this category"}), 404
+    return jsonify([
+        {
+            "id": supplier.id,
+            "name": supplier.name,
+            "contact_info": supplier.contact_info
+        }
+        for supplier in suppliers
+    ])
+
+def get_product_details(product_id):
+    product = Product.query.get(product_id)
+    if not product:
+        return jsonify({"message": "Product not found"}), 404
+    return jsonify({
+        "id": product.id,
+        "name": product.name,
+        "brand": product.brand,
+        "price": product.price,
+        "category": product.category,
+        "description": product.description,
+        "supplier": product.supplier.name
+    })
