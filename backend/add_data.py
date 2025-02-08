@@ -53,7 +53,7 @@ with app.app_context():
         category = random.choice(categories)
         price = round(random.uniform(50, 2000), 2)  # Random price between 50 and 2000
         description = f"Description for {name}"
-        supplier = random.choice(suppliers)  # Randomly select a supplier from the database for each product
+        supplier = random.uniform(1,11)  # Randomly select a supplier from the database for each product
 
         # Create a product and add it to the session
         product = Product(
